@@ -5,17 +5,15 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/doppar/queue/actions/workflows/tests.yml"><img src="https://github.com/doppar/queue/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/doppar/queue"><img src="https://img.shields.io/packagist/dt/doppar/queue" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/doppar/queue"><img src="https://img.shields.io/packagist/v/doppar/queue" alt="Latest Stable Version"></a>
-<a href="https://github.com/doppar/queue/blob/main/LICENSE"><img src="https://img.shields.io/github/license/doppar/queue" alt="License"></a>
+<a href="https://github.com/doppar/notifier/actions/workflows/tests.yml"><img src="https://github.com/doppar/notifier/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/doppar/notifier"><img src="https://img.shields.io/packagist/dt/doppar/notifier" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/doppar/notifier"><img src="https://img.shields.io/packagist/v/doppar/notifier" alt="Latest Stable Version"></a>
+<a href="https://github.com/doppar/notifier/blob/main/LICENSE"><img src="https://img.shields.io/github/license/doppar/notifier" alt="License"></a>
 </p>
 
-## About Doppar Queue
+## About Doppar Notifier
 
-> **Note:** This repository contains the core code of the Doppar framework queue package. If you want to build an application using Doppar, visit the main [Doppar repository](https://github.com/doppar/doppar).
-
-Doppar queue system offers robust features including multiple queue support for organizing jobs by priority or category, automatic retry logic with configurable attempts and delays, and comprehensive failed job tracking for easier debugging. It supports delayed execution for scheduling jobs in the future, graceful shutdown handling to safely stop workers, and built-in memory management that automatically restarts workers when limits are exceeded.
+Doppar notification system offers robust features including multi-channel delivery with support for `database`, `Slack`, `Discord`, and custom webhooks, secure model serialization that safely handles Eloquent models in notification payloads, and automatic retry logic with configurable attempts. It supports bulk notifications for sending to thousands of users efficiently, delayed and scheduled delivery for future notifications, read/unread tracking for in-app notifications, and a fluent API with intuitive, chainable syntax that makes sending notifications a breeze.
 
 ## Contributing
 
