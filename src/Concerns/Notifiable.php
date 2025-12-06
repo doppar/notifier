@@ -86,7 +86,9 @@ trait Notifiable
             ->where('notifiable_type', get_class($this))
             ->where('notifiable_id', auth()?->id())
             ->whereNull('read_at')
-            ->update(['read_at' => date('Y-m-d H:i:s')]);
+            ->update([
+                'read_at' => now()
+            ]);
     }
 
     /**

@@ -3,10 +3,7 @@
 namespace Doppar\Notifier;
 
 use Doppar\Notifier\Contracts\Notification;
-use Doppar\Notifier\Channels\WebhookChannel;
-use Doppar\Notifier\Channels\SmsChannel;
 use Doppar\Notifier\Channels\SlackChannel;
-use Doppar\Notifier\Channels\MailChannel;
 use Doppar\Notifier\Channels\DiscordChannel;
 use Doppar\Notifier\Channels\DatabaseChannel;
 use Doppar\Notifier\Channels\Contracts\ChannelDriver;
@@ -75,11 +72,8 @@ class NotificationManager
 
         return match($channel) {
             'database' => new DatabaseChannel($this->app),
-            'mail' => new MailChannel($this->app),
-            'sms' => new SmsChannel($this->app),
             'slack' => new SlackChannel($this->app),
             'discord' => new DiscordChannel($this->app),
-            'webhook' => new WebhookChannel($this->app),
             default => throw new \InvalidArgumentException("Notification channel [{$channel}] is not supported."),
         };
     }
