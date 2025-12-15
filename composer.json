@@ -46,6 +46,6 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "doppar/queue": "^1.0@dev"
+        "doppar/queue": "^1.*"
     }
 }
