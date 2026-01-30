@@ -1,5 +1,13 @@
 # Release Notes
 
+## v1.0.4 - 2026-01-29
+
+### What's Changed
+
+* console command handle() method dependency injection: by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/8
+
+**Full Changelog**: https://github.com/doppar/notifier/compare/v1.0.3...v1.0.4
+
 ## v1.0.3 - 2026-01-22
 
 ### What's Changed
