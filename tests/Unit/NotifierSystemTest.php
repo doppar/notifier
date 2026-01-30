@@ -9,16 +9,14 @@ use Phaseolies\Database\Database;
 use Phaseolies\DI\Container;
 use PHPUnit\Framework\TestCase;
 use PDO;
-use Doppar\Queue\QueueWorker;
-use Doppar\Queue\QueueManager;
-use Doppar\Queue\Facades\Queue;
 use Doppar\Notifier\Tests\Mock\MockContainer;
+use Doppar\Notifier\NotificationManager;
+use Doppar\Notifier\Tests\Mock\Channels\TestCustomChannel;
 
-class NotificationSystemTest extends TestCase
+class NotifierSystemTest extends TestCase
 {
     private $pdo;
     private $manager;
-    private $worker;
 
     protected function setUp(): void
     {
@@ -27,29 +25,50 @@ class NotificationSystemTest extends TestCase
         $container->bind('request', fn() => new Request());
         $container->bind('url', fn() => UrlGenerator::class);
         $container->bind('db', fn() => new Database('default'));
+        $container->singleton('notification.manager', NotificationManager::class);
         $container->singleton('log', LoggerService::class);
 
         $this->pdo = new PDO('sqlite::memory:');
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $this->createQueueTables();
+        $this->createNotificationTables();
         $this->setupDatabaseConnections();
 
-        $this->manager = new QueueManager();
-        $this->worker = new QueueWorker($this->manager);
+        $this->manager = new NotificationManager();
     }
 
     protected function tearDown(): void
     {
         $this->pdo = null;
         $this->manager = null;
-        $this->worker = null;
         $this->tearDownDatabaseConnections();
     }
 
-    private function createQueueTables(): void
+    private function createNotificationTables(): void
     {
-        // Create queue_jobs table
+        // Create notifications table
+        $this->pdo->exec("
+            CREATE TABLE notifications (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                notifiable_type TEXT NOT NULL,
+                notifiable_id INTEGER NOT NULL,
+                type TEXT NOT NULL,
+                data TEXT NOT NULL,
+                metadata TEXT,
+                read_at TEXT,
+                created_at TEXT NOT NULL
+            )
+        ");
+
+        $this->pdo->exec("
+            CREATE INDEX idx_notifiable ON notifications(notifiable_type, notifiable_id)
+        ");
+
+        $this->pdo->exec("
+            CREATE INDEX idx_read_at ON notifications(read_at)
+        ");
+
+        // Create queue_jobs table (for queued notifications)
         $this->pdo->exec("
             CREATE TABLE queue_jobs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,26 +79,6 @@ class NotificationSystemTest extends TestCase
                 available_at INTEGER NOT NULL,
                 created_at INTEGER NOT NULL
             )
-        ");
-
-        $this->pdo->exec("
-            CREATE INDEX idx_queue_reserved ON queue_jobs(queue, reserved_at)
-        ");
-
-        // Create failed_jobs table
-        $this->pdo->exec("
-            CREATE TABLE failed_jobs (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                connection TEXT NOT NULL,
-                queue TEXT NOT NULL,
-                payload TEXT NOT NULL,
-                exception TEXT NOT NULL,
-                failed_at INTEGER NOT NULL
-            )
-        ");
-
-        $this->pdo->exec("
-            CREATE INDEX idx_failed_at ON failed_jobs(failed_at)
         ");
     }
 
@@ -114,11 +113,41 @@ class NotificationSystemTest extends TestCase
     }
 
     // =====================================================
-    // TEST JOB CREATION AND DISPATCHING
+    // TEST NOTIFICATION MANAGER
     // =====================================================
 
-    public function testAssertTrue(): void
+     public function testInvalidChannelThrowsException(): void
     {
-        $this->assertTrue(true);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Notification channel [invalid] is not supported.');
+
+        $this->manager->channel('invalid');
+    }
+
+    public function testExtendWithNonExistentClass(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Driver class [NonExistentClass] does not exist.');
+
+        $this->manager->extend('custom', 'NonExistentClass');
+    }
+
+    public function testExtendWithInvalidDriverClass(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Driver class must extend ChannelDriver.');
+
+        $this->manager->extend('custom', \stdClass::class);
+    }
+
+    public function testHasChannel(): void
+    {
+        $this->assertTrue($this->manager->hasChannel('database'));
+        $this->assertTrue($this->manager->hasChannel('slack'));
+        $this->assertTrue($this->manager->hasChannel('discord'));
+        $this->assertFalse($this->manager->hasChannel('nonexistent'));
+
+        $this->manager->extend('custom', TestCustomChannel::class);
+        $this->assertTrue($this->manager->hasChannel('custom'));
     }
 }
