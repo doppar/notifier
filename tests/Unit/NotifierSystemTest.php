@@ -150,4 +150,18 @@ class NotifierSystemTest extends TestCase
         $this->manager->extend('custom', TestCustomChannel::class);
         $this->assertTrue($this->manager->hasChannel('custom'));
     }
+
+    public function testGetChannels(): void
+    {
+        $channels = $this->manager->getChannels();
+
+        $this->assertContains('database', $channels);
+        $this->assertContains('slack', $channels);
+        $this->assertContains('discord', $channels);
+
+        $this->manager->extend('custom', TestCustomChannel::class);
+
+        $channels = $this->manager->getChannels();
+        $this->assertContains('custom', $channels);
+    }
 }
