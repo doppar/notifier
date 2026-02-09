@@ -11,6 +11,10 @@ class MockNotifiable extends Model
 
     protected $table = 'users';
 
+    protected $connection = 'default';
+
+    protected $timeStamps = false;
+
     protected $creatable = [
         'id',
         'name',

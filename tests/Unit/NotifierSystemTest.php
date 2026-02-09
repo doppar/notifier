@@ -18,6 +18,10 @@ use Doppar\Notifier\Tests\Mock\Notifications\TestEmailNotification;
 use Doppar\Notifier\Supports\Facades\Notification;
 use Doppar\Notifier\Concerns\NotificationBuilder;
 use Doppar\Notifier\Concerns\BulkNotificationBuilder;
+use Doppar\Notifier\Concerns\QueryNotificationBuilder;
+use Doppar\Notifier\Concerns\ScheduledNotificationBuilder;
+use Doppar\Notifier\NotificationDispatcher;
+use Doppar\Queue\Facades\Queue;
 
 class NotifierSystemTest extends TestCase
 {
@@ -84,6 +88,16 @@ class NotifierSystemTest extends TestCase
                 reserved_at INTEGER,
                 available_at INTEGER NOT NULL,
                 created_at INTEGER NOT NULL
+            )
+        ");
+
+        $this->pdo->exec("
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL UNIQUE,
+                slack_webhook_url TEXT NULL,
+                discord_webhook_url TEXT NULL
             )
         ");
     }
@@ -313,5 +327,27 @@ class NotifierSystemTest extends TestCase
         $property->setAccessible(true);
 
         $this->assertEquals(100, $property->getValue($builder));
+    }
+
+    public function testQueryNotificationBuilder(): void
+    {
+        $builder = Notification::toAll(MockNotifiable::class);
+
+        $this->assertInstanceOf(QueryNotificationBuilder::class, $builder);
+    }
+
+    public function testNotifyHelperWithoutArgument(): void
+    {
+        $result = notify();
+
+        $this->assertInstanceOf(Notification::class, $result);
+    }
+
+    public function testNotifyHelperWithNotifiable(): void
+    {
+        $notifiable = new MockNotifiable(['id' => 1]);
+        $result = notify($notifiable);
+
+        $this->assertInstanceOf(NotificationBuilder::class, $result);
     }
 }
