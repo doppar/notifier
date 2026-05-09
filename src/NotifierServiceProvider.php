@@ -2,11 +2,12 @@
 
 namespace Doppar\Notifier;
 
+use Phaseolies\Providers\GhostableProvider;
 use Phaseolies\Providers\ServiceProvider;
 use Doppar\Notifier\NotificationManager;
 use Doppar\Notifier\Console\Commands\MakeNotificationCommand;
 
-class NotifierServiceProvider extends ServiceProvider
+class NotifierServiceProvider extends ServiceProvider implements GhostableProvider
 {
     /**
      * Register any application services.
@@ -36,5 +37,17 @@ class NotifierServiceProvider extends ServiceProvider
         $this->commands([
             MakeNotificationCommand::class
         ]);
+    }
+
+    /**
+     * Get the services that should ghost-load this provider.
+     *
+     * @return array<int, string>
+     */
+    public function ghosts(): array
+    {
+        return [
+            NotificationManager::class,
+        ];
     }
 }

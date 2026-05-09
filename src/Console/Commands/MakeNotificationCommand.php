@@ -28,9 +28,7 @@ class MakeNotificationCommand extends Command
     public function handle(): int
     {
         return $this->executeWithTiming(function () {
-            $name = $this->argument('name');
-            $parts = explode('/', $name);
-            $className = array_pop($parts);
+            [$name, $parts, $className] = $this->splitGeneratedName((string) $this->argument('name'));
 
             // Ensure class name ends with Notification
             if (!str_ends_with($className, 'Notification')) {
@@ -38,14 +36,13 @@ class MakeNotificationCommand extends Command
             }
 
             $namespace = 'App\\Notifications' . (count($parts) > 0 ? '\\' . implode('\\', $parts) : '');
-            $parts[] = $className;
-
-            $filePath = base_path('app/Notifications/' . implode(DIRECTORY_SEPARATOR, $parts) . '.php');
+            $fileName = count($parts) > 0 ? implode('/', $parts) . '/' . $className : $className;
+            $filePath = $this->generatedFilePath('app/Notifications', $fileName);
 
             // Check if Notification already exists
             if (file_exists($filePath)) {
                 $this->displayError('Notification already exists at:');
-                $this->line('<fg=white>' . str_replace(base_path(), '', $filePath) . '</>');
+                $this->line('<fg=white>' . $this->relativePath($filePath) . '</>');
                 return Command::FAILURE;
             }
 
@@ -64,7 +61,7 @@ class MakeNotificationCommand extends Command
             file_put_contents($filePath, $content);
 
             $this->displaySuccess('Notification created successfully');
-            $this->line('<fg=yellow>📦 File:</> <fg=white>' . str_replace(base_path(), '', $filePath) . '</>');
+            $this->line('<fg=yellow>📦 File:</> <fg=white>' . $this->relativePath($filePath) . '</>');
             $this->newLine();
             $this->line('<fg=yellow>⚙️  Class:</> <fg=white>' . $className . '</>');
 
