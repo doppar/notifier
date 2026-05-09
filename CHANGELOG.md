@@ -1,5 +1,17 @@
 # Release Notes
 
+## v1.0.5 - 2026-05-09
+
+### What's Changed
+
+* notification unit test setup environment by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/9
+* notification unit test by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/10
+* Notification unit test by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/11
+* unit test by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/12
+* Made NotifierServiceProvider Ghostable by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/13
+
+**Full Changelog**: https://github.com/doppar/notifier/compare/v1.0.4...v1.0.5
+
 ## v1.0.4 - 2026-01-29
 
 ### What's Changed
