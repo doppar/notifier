@@ -31,18 +31,12 @@
             "Doppar\\Notifier\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "doppar": {
-            "providers": [
-                "Doppar\\Notifier\\NotifierLauncher"
-            ]
-        }
-    },
     "config": {
         "sort-packages": true
     },
     "minimum-stability": "dev",
     "require": {
+        "php": "^8.5",
         "doppar/queue": "4.*"
     },
     "prefer-stable": true

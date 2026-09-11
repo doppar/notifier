@@ -124,9 +124,7 @@ class NotifierSystemTest extends TestCase
         try {
             $reflection = new \ReflectionClass($className);
             $property = $reflection->getProperty($propertyName);
-            $property->setAccessible(true);
             $property->setValue(null, $value);
-            $property->setAccessible(false);
         } catch (\ReflectionException $e) {
             $this->fail("Failed to set static property {$propertyName}: " . $e->getMessage());
         }
@@ -295,7 +293,6 @@ class NotifierSystemTest extends TestCase
 
         $reflection = new \ReflectionClass($builder);
         $property = $reflection->getProperty('delay');
-        $property->setAccessible(true);
 
         $this->assertEquals(300, $property->getValue($builder));
     }
@@ -324,7 +321,6 @@ class NotifierSystemTest extends TestCase
 
         $reflection = new \ReflectionClass($builder);
         $property = $reflection->getProperty('batchSize');
-        $property->setAccessible(true);
 
         $this->assertEquals(100, $property->getValue($builder));
     }
