@@ -15,8 +15,8 @@
     ],
     "require-dev": {
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^12.1.5",
-        "doppar/framework": "3.*"
+        "phpunit/phpunit": "^13.3",
+        "doppar/framework": "4.*"
     },
     "autoload": {
         "psr-4": {
@@ -31,21 +31,13 @@
             "Doppar\\Notifier\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        },
-        "doppar": {
-            "providers": [
-                "Doppar\\Notifier\\NotifierServiceProvider"
-            ]
-        }
-    },
     "config": {
         "sort-packages": true
     },
     "minimum-stability": "dev",
     "require": {
-        "doppar/queue": "1.*"
-    }
+        "php": "^8.5",
+        "doppar/queue": "4.*"
+    },
+    "prefer-stable": true
 }

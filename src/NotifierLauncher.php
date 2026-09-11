@@ -2,12 +2,12 @@
 
 namespace Doppar\Notifier;
 
-use Phaseolies\Providers\GhostableProvider;
-use Phaseolies\Providers\ServiceProvider;
+use Phaseolies\Launchers\GhostableLauncher;
+use Phaseolies\Launchers\ServiceLauncher;
 use Doppar\Notifier\NotificationManager;
 use Doppar\Notifier\Console\Commands\MakeNotificationCommand;
 
-class NotifierServiceProvider extends ServiceProvider implements GhostableProvider
+class NotifierLauncher extends ServiceLauncher implements GhostableLauncher
 {
     /**
      * Register any application services.
@@ -26,12 +26,12 @@ class NotifierServiceProvider extends ServiceProvider implements GhostableProvid
      *
      * @return void
      */
-    public function boot(): void
+    public function launch(): void
     {
         $this->loadMigrations(__DIR__ . '/database/migrations');
 
         $this->publishes([
-            __DIR__ . '/database/migrations' => database_path('migrations'),
+            __DIR__ . '/database/migrations' => schema_path('migrations'),
         ], 'migrations');
 
         $this->commands([

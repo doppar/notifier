@@ -37,7 +37,7 @@ class MakeNotificationCommand extends Command
 
             $namespace = 'App\\Notifications' . (count($parts) > 0 ? '\\' . implode('\\', $parts) : '');
             $fileName = count($parts) > 0 ? implode('/', $parts) . '/' . $className : $className;
-            $filePath = $this->generatedFilePath('app/Notifications', $fileName);
+            $filePath = $this->generatedFilePath('src/Notifications', $fileName);
 
             // Check if Notification already exists
             if (file_exists($filePath)) {
