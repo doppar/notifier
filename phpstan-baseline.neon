@@ -1,0 +1,271 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: src/Channels/Contracts/ChannelDriver.php
+
+		-
+			message: '#^PHPDoc tag @var for property Doppar\\Notifier\\Channels\\Contracts\\ChannelDriver\:\:\$app with type mixed is not subtype of native type Phaseolies\\Application\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Channels/Contracts/ChannelDriver.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Channels\\DiscordChannel\:\:postToDiscord\(\) has parameter \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Channels/DiscordChannel.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects array\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Channels/DiscordChannel.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Log\:\:error\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Channels/SlackChannel.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Channels\\SlackChannel\:\:postToSlack\(\) has parameter \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Channels/SlackChannel.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, bool\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Channels/SlackChannel.php
+
+		-
+			message: '#^Parameter \#2 \$options of function curl_setopt_array expects array\{47\: bool, 10015\: array\|string, 19913\: bool, 10023\: array\<int, string\>, 13\: int\}, array\{47\: true, 10015\: non\-empty\-string\|false, 19913\: true, 10023\: array\{''Content\-Type\:…''\}, 13\: 10\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Channels/SlackChannel.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:__construct\(\) has parameter \$notifiables with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:dispatchBatch\(\) has parameter \$batch with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:dispatchBatch\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:send\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:via\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:\$channels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\BulkNotificationBuilder\:\:\$notifiables type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/BulkNotificationBuilder.php
+
+		-
+			message: '#^Trait Doppar\\Notifier\\Concerns\\Notifiable is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Concerns/Notifiable.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\NotificationBuilder\:\:__construct\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Concerns/NotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\NotificationBuilder\:\:via\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/NotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\NotificationBuilder\:\:\$channels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/NotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\NotificationPipeline\:\:via\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/NotificationPipeline.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\NotificationPipeline\:\:\$channels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/NotificationPipeline.php
+
+		-
+			message: '#^Result of static method Doppar\\Notifier\\NotificationDispatcher\:\:queueAsSync\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: src/Concerns/NotificationPipeline.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\QueryNotificationBuilder\:\:via\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/QueryNotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\QueryNotificationBuilder\:\:\$channels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/QueryNotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\QueryNotificationBuilder\:\:\$wheres type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/QueryNotificationBuilder.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Concerns\\ScheduledNotificationBuilder\:\:via\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/ScheduledNotificationBuilder.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Concerns\\ScheduledNotificationBuilder\:\:\$channels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Concerns/ScheduledNotificationBuilder.php
+
+		-
+			message: '#^Cannot cast array\|string\|null to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Console/Commands/MakeNotificationCommand.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strtolower expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/Commands/MakeNotificationCommand.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Contracts\\Notification\:\:channels\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Contracts/Notification.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Contracts\\Notification\:\:content\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Contracts/Notification.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Contracts\\Notification\:\:metadata\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Contracts/Notification.php
+
+		-
+			message: '#^Function notify\(\) has parameter \$notifiable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Helpers/notifier.php
+
+		-
+			message: '#^Access to an undefined property Doppar\\Notifier\\Models\\DatabaseNotification\:\:\$notifiable_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/DatabaseNotification.php
+
+		-
+			message: '#^Access to an undefined property Doppar\\Notifier\\Models\\DatabaseNotification\:\:\$notifiable_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Models/DatabaseNotification.php
+
+		-
+			message: '#^Access to an undefined property Doppar\\Notifier\\Models\\DatabaseNotification\:\:\$read_at\.$#'
+			identifier: property.notFound
+			count: 4
+			path: src/Models/DatabaseNotification.php
+
+		-
+			message: '#^Property Doppar\\Notifier\\Models\\DatabaseNotification\:\:\$creatable type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Models/DatabaseNotification.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Log\:\:error\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/NotificationDispatcher.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on class\-string\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/NotificationDispatcher.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\NotificationDispatcher\:\:__construct\(\) has parameter \$channels with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/NotificationDispatcher.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\NotificationManager\:\:getChannels\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/NotificationManager.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\NotificationManager\:\:resolveChannel\(\) should return Doppar\\Notifier\\Channels\\Contracts\\ChannelDriver but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/NotificationManager.php
+
+		-
+			message: '#^Method Doppar\\Notifier\\Supports\\Facades\\Notification\:\:toMany\(\) has parameter \$notifiables with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Supports/Facades/Notification.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Schema\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/database/migrations/2025_04_19_184307_create_notifications_table.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Schema\:\:dropIfExists\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/database/migrations/2025_04_19_184307_create_notifications_table.php
