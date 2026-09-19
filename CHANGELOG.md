@@ -1,5 +1,15 @@
 # Release Notes
 
+## 4.0.0 - 2026-09-16
+
+### What's Changed
+
+* ready for doppar 4.x by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/14
+* tests.yml for php8.5 by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/15
+* readme.md updated for 4.x version by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/16
+
+**Full Changelog**: https://github.com/doppar/notifier/compare/v1.0.5...4.0.0
+
 ## v1.0.5 - 2026-05-09
 
 ### What's Changed
