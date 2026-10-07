@@ -4,6 +4,9 @@ namespace Doppar\Notifier\Models;
 
 use Phaseolies\Database\Entity\Model;
 
+/**
+ * @property string $status
+ */
 class NotificationDelivery extends Model
 {
     /**
