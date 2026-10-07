@@ -16,12 +16,14 @@ abstract class ChannelDriver
 
     /**
      * Create a new channel driver instance
-     * 
+     *
      * @param mixed $app
      */
     public function __construct($app = null)
     {
-        $this->app = $app;
+        if ($app instanceof Application) {
+            $this->app = $app;
+        }
     }
 
     /**
@@ -43,8 +45,12 @@ abstract class ChannelDriver
      */
     protected function config(string $key, $default = null)
     {
-        if ($this->app && function_exists('config')) {
-            return config($key, $default);
+        if (function_exists('config')) {
+            try {
+                return config($key, $default);
+            } catch (\Throwable) {
+                return $default;
+            }
         }
 
         return $default;

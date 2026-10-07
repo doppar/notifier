@@ -17,6 +17,17 @@ class MockContainer extends Container
         return $path ? $base . DIRECTORY_SEPARATOR . $path : $base;
     }
 
+    public function basePath(string $path = ''): string
+    {
+        $base = sys_get_temp_dir() . '/phaseolies_base';
+
+        if (!is_dir($base)) {
+            mkdir($base, 0777, true);
+        }
+
+        return $path ? $base . DIRECTORY_SEPARATOR . $path : $base;
+    }
+
     public function runningInConsole(): bool
     {
         return true;

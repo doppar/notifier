@@ -4,6 +4,8 @@ namespace Doppar\Notifier\Concerns;
 
 use Doppar\Notifier\NotificationDispatcher;
 use Doppar\Notifier\Contracts\Notification;
+use Doppar\Notifier\Support\Id;
+use Doppar\Notifier\Testing\NotificationFake;
 
 class NotificationPipeline
 {
@@ -99,7 +101,7 @@ class NotificationPipeline
 
     /**
      * Send the notification
-     * 
+     *
      * @return mixed
      */
     public function send(): mixed
@@ -108,38 +110,60 @@ class NotificationPipeline
             return null;
         }
 
-        $channels = $this->channels ?? $this->notification->channels($this->notifiable);
+        $channels = $this->channels ?? $this->allowedChannels($this->notification->channels($this->notifiable));
 
         if (empty($channels)) {
             return null;
         }
 
+        $channels = array_values(array_unique(array_map('strval', $channels)));
         $delay = $this->delay ?: $this->notification->deliveryDelay();
 
         $this->sent = true;
 
-        if ($this->shouldQueue) {
-            if ($delay > 0) {
-                return NotificationDispatcher::queueAfter(
-                    $delay,
-                    $this->notifiable,
-                    $this->notification,
-                    $channels
-                );
-            }
+        $fake = NotificationFake::current();
 
-            return NotificationDispatcher::dispatchWith(
-                $this->notifiable,
-                $this->notification,
-                $channels
-            );
+        if ($fake !== null) {
+            return $fake->record($this->notifiable, $this->notification, $channels, $delay, !$this->shouldQueue);
         }
 
-        return NotificationDispatcher::queueAsSync(
-            $this->notifiable,
-            $this->notification,
-            $channels
-        );
+        $notificationId = Id::uuid();
+
+        if (!$this->shouldQueue) {
+            (new NotificationDispatcher($this->notifiable, $this->notification, $channels, $notificationId))->handle();
+
+            return null;
+        }
+
+        foreach ($channels as $channel) {
+            $job = new NotificationDispatcher($this->notifiable, $this->notification, [$channel], $notificationId);
+
+            if ($delay > 0) {
+                $job->delayFor($delay)->forceQueue();
+            } else {
+                $job->dispatch();
+            }
+        }
+
+        return $notificationId;
+    }
+
+    /**
+     * Keep the channels the notifiable wants to receive this notification on
+     *
+     * @param array<int, string> $channels
+     * @return array<int, string>
+     */
+    protected function allowedChannels(array $channels): array
+    {
+        if (!is_object($this->notifiable) || !method_exists($this->notifiable, 'wantsNotification')) {
+            return $channels;
+        }
+
+        return array_values(array_filter(
+            $channels,
+            fn ($channel): bool => (bool) $this->notifiable->wantsNotification($this->notification, (string) $channel)
+        ));
     }
 
     /**

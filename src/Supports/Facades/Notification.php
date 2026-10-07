@@ -7,6 +7,8 @@ use Doppar\Notifier\Concerns\ScheduledNotificationBuilder;
 use Doppar\Notifier\Concerns\QueryNotificationBuilder;
 use Doppar\Notifier\Concerns\NotificationBuilder;
 use Doppar\Notifier\Concerns\BulkNotificationBuilder;
+use Doppar\Notifier\NotificationEvents;
+use Doppar\Notifier\Testing\NotificationFake;
 
 class Notification
 {
@@ -52,5 +54,71 @@ class Notification
     public static function schedule(ContractsNotification $notification): ScheduledNotificationBuilder
     {
         return new ScheduledNotificationBuilder($notification);
+    }
+
+    /**
+     * Capture notifications instead of sending them
+     *
+     * @return NotificationFake
+     */
+    public static function fake(): NotificationFake
+    {
+        return NotificationFake::activate();
+    }
+
+    /**
+     * Send notifications for real again after fake()
+     *
+     * @return void
+     */
+    public static function unfake(): void
+    {
+        NotificationFake::deactivate();
+    }
+
+    /**
+     * Listen for a delivery that is about to be made
+     *
+     * The listener receives the notifiable, the notification and the channel.
+     * Returning false cancels that delivery.
+     *
+     * @param callable $listener
+     * @return void
+     */
+    public static function sending(callable $listener): void
+    {
+        NotificationEvents::listen(NotificationEvents::SENDING, $listener);
+    }
+
+    /**
+     * Listen for a delivery that succeeded
+     *
+     * @param callable $listener
+     * @return void
+     */
+    public static function sent(callable $listener): void
+    {
+        NotificationEvents::listen(NotificationEvents::SENT, $listener);
+    }
+
+    /**
+     * Listen for a delivery that failed
+     *
+     * @param callable $listener
+     * @return void
+     */
+    public static function failed(callable $listener): void
+    {
+        NotificationEvents::listen(NotificationEvents::FAILED, $listener);
+    }
+
+    /**
+     * Remove every delivery listener
+     *
+     * @return void
+     */
+    public static function flushListeners(): void
+    {
+        NotificationEvents::flush();
     }
 }

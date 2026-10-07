@@ -3,13 +3,14 @@
 namespace Doppar\Notifier\Channels;
 
 use Doppar\Notifier\Contracts\Notification;
+use Doppar\Notifier\Channels\Support\Http;
 use Doppar\Notifier\Channels\Contracts\ChannelDriver;
 
 class DiscordChannel extends ChannelDriver
 {
     /**
      * Send notification to Discord
-     * 
+     *
      * @param mixed $notifiable
      * @param Notification $notification
      * @return void
@@ -23,16 +24,16 @@ class DiscordChannel extends ChannelDriver
             throw new \RuntimeException('No Discord webhook URL defined for notifiable entity.');
         }
 
-        $content = $notification->content($notifiable);
+        $content = $notification->contentFor('discord', $notifiable);
 
         $payload = [
             'content' => $content['content'] ?? '',
-            'username' => $content['username'] ?? config('notification.discord.username', 'Doppar Bot'),
+            'username' => $content['username'] ?? $this->config('notification.discord.username', 'Doppar Bot'),
             'avatar_url' => $content['avatar'] ?? null,
             'embeds' => $content['embeds'] ?? [],
         ];
 
-        $this->postToDiscord($webhookUrl, $payload);
+        $this->postToDiscord((string) $webhookUrl, $payload);
     }
 
     /**
@@ -45,18 +46,14 @@ class DiscordChannel extends ChannelDriver
      */
     protected function postToDiscord(string $webhookUrl, array $payload): void
     {
-        $ch = curl_init($webhookUrl);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        $response = Http::post(
+            $webhookUrl,
+            json_encode($payload, JSON_THROW_ON_ERROR),
+            ['Content-Type: application/json']
+        );
 
-        $result = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($httpCode < 200 || $httpCode >= 300) {
-            throw new \RuntimeException("Discord notification failed with HTTP code: {$httpCode}");
+        if ($response['status'] < 200 || $response['status'] >= 300) {
+            throw new \RuntimeException("Discord notification failed with HTTP code: {$response['status']}");
         }
     }
 }

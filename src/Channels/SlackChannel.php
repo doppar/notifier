@@ -2,15 +2,15 @@
 
 namespace Doppar\Notifier\Channels;
 
-use Phaseolies\Support\Facades\Log;
 use Doppar\Notifier\Contracts\Notification;
+use Doppar\Notifier\Channels\Support\Http;
 use Doppar\Notifier\Channels\Contracts\ChannelDriver;
 
 class SlackChannel extends ChannelDriver
 {
     /**
      * Send notification to Slack
-     * 
+     *
      * @param mixed $notifiable
      * @param Notification $notification
      * @return void
@@ -24,7 +24,7 @@ class SlackChannel extends ChannelDriver
             throw new \RuntimeException('Slack webhook URL is missing.');
         }
 
-        $content = $notification->content($notifiable);
+        $content = $notification->contentFor('slack', $notifiable);
 
         $payload = [
             'text' => $content['text'] ?? '',
@@ -44,7 +44,7 @@ class SlackChannel extends ChannelDriver
             $payload['channel'] = $content['channel'];
         }
 
-        $this->postToSlack($webhookUrl, $payload);
+        $this->postToSlack((string) $webhookUrl, $payload);
     }
 
     /**
@@ -57,24 +57,16 @@ class SlackChannel extends ChannelDriver
      */
     protected function postToSlack(string $webhookUrl, array $payload): void
     {
-        $ch = curl_init($webhookUrl);
+        $response = Http::post(
+            $webhookUrl,
+            json_encode($payload, JSON_THROW_ON_ERROR),
+            ['Content-Type: application/json']
+        );
 
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-            CURLOPT_TIMEOUT => 10,
-        ]);
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-
-        curl_close($ch);
-
-        if ($httpCode !== 200 || trim($response) !== 'ok') {
-            Log::error("Slack notification failed (HTTP {$httpCode}): " . ($response ?: $error));
+        if ($response['status'] !== 200 || trim($response['body']) !== 'ok') {
+            throw new \RuntimeException(
+                "Slack notification failed (HTTP {$response['status']}): " . ($response['body'] ?: $response['error'])
+            );
         }
     }
 }
