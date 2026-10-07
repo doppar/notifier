@@ -269,3 +269,33 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 1
 			path: src/database/migrations/2025_04_19_184307_create_notifications_table.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Mail\:\:to\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Channels/MailChannel.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Log\:\:error\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/NotificationEvents.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Log\:\:warning\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Support/DeliveryLog.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Schema\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/database/migrations/2026_10_07_000000_create_notification_deliveries_table.php
+
+		-
+			message: '#^Call to an undefined static method Phaseolies\\Support\\Facades\\Schema\:\:dropIfExists\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/database/migrations/2026_10_07_000000_create_notification_deliveries_table.php

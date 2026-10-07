@@ -6,10 +6,19 @@ use Doppar\Notifier\Contracts\Notification;
 use Doppar\Notifier\Channels\SlackChannel;
 use Doppar\Notifier\Channels\DiscordChannel;
 use Doppar\Notifier\Channels\DatabaseChannel;
+use Doppar\Notifier\Channels\MailChannel;
+use Doppar\Notifier\Channels\WebhookChannel;
 use Doppar\Notifier\Channels\Contracts\ChannelDriver;
 
 class NotificationManager
 {
+    /**
+     * The channels that ship with the package
+     *
+     * @var array<int, string>
+     */
+    public const BUILT_IN = ['database', 'mail', 'slack', 'discord', 'webhook'];
+
     /**
      * Cached channel driver instances
      * 
@@ -72,8 +81,10 @@ class NotificationManager
 
         return match($channel) {
             'database' => new DatabaseChannel($this->app),
+            'mail' => new MailChannel($this->app),
             'slack' => new SlackChannel($this->app),
             'discord' => new DiscordChannel($this->app),
+            'webhook' => new WebhookChannel($this->app),
             default => throw new \InvalidArgumentException("Notification channel [{$channel}] is not supported."),
         };
     }
@@ -110,8 +121,8 @@ class NotificationManager
      */
     public function hasChannel(string $channel): bool
     {
-        return isset($this->customDrivers[$channel]) || 
-               in_array($channel, ['database', 'slack', 'discord']);
+        return isset($this->customDrivers[$channel]) ||
+               in_array($channel, self::BUILT_IN, true);
     }
 
     /**
@@ -121,10 +132,7 @@ class NotificationManager
      */
     public function getChannels(): array
     {
-        $builtIn = ['database', 'slack', 'discord'];
-        $custom = array_keys($this->customDrivers);
-
-        return array_merge($builtIn, $custom);
+        return array_merge(self::BUILT_IN, array_keys($this->customDrivers));
     }
 
     /**

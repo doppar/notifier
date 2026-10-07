@@ -6,6 +6,7 @@ use Phaseolies\Launchers\GhostableLauncher;
 use Phaseolies\Launchers\ServiceLauncher;
 use Doppar\Notifier\NotificationManager;
 use Doppar\Notifier\Console\Commands\MakeNotificationCommand;
+use Doppar\Notifier\Console\Commands\PruneNotificationsCommand;
 
 class NotifierLauncher extends ServiceLauncher implements GhostableLauncher
 {
@@ -35,7 +36,8 @@ class NotifierLauncher extends ServiceLauncher implements GhostableLauncher
         ], 'migrations');
 
         $this->commands([
-            MakeNotificationCommand::class
+            MakeNotificationCommand::class,
+            PruneNotificationsCommand::class,
         ]);
     }
 

@@ -4,6 +4,9 @@ namespace Doppar\Notifier\Models;
 
 use Phaseolies\Database\Entity\Model;
 
+/**
+ * @property string $data
+ */
 class DatabaseNotification extends Model
 {
     /**
@@ -78,6 +81,43 @@ class DatabaseNotification extends Model
     public function isUnread(): bool
     {
         return $this->read_at === null;
+    }
+
+    /**
+     * Get the notification's content as an array
+     *
+     * @return array<string, mixed>
+     */
+    public function payload(): array
+    {
+        $data = json_decode((string) $this->data, true);
+
+        return is_array($data) ? $data : [];
+    }
+
+    /**
+     * Delete old notifications
+     *
+     * @param int $days
+     * @param bool $onlyRead
+     * @return int
+     */
+    public static function prune(int $days, bool $onlyRead = true): int
+    {
+        $cutoff = date('Y-m-d H:i:s', time() - max(0, $days) * 86400);
+        $matching = static function () use ($cutoff, $onlyRead) {
+            $query = static::query()->where('created_at', '<', $cutoff);
+
+            return $onlyRead ? $query->whereNotNull('read_at') : $query;
+        };
+
+        $count = (int) $matching()->count();
+
+        if ($count > 0) {
+            $matching()->delete();
+        }
+
+        return $count;
     }
 
     /**
